@@ -187,6 +187,185 @@ output inserted.ID
 values (3,12);
 go
 
+create table BaiHoc
+(
+	ID int IDENTITY(1,1) PRIMARY KEY,
+	IDChuDe int FOREIGN KEY REFERENCES dbo.ChuDe(ID),
+	BaiSo int default 1,
+	TenBaiHoc nvarchar(100),
+	NgayTao date default getdate()
+)
+go
+
+truncate table BaiHoc;
+
+insert into BaiHoc(IDChuDe, TenBaiHoc)
+output inserted.ID
+values (1, N'Nói chuyện làm quen');
+
+insert into BaiHoc(IDChuDe, TenBaiHoc)
+output inserted.ID
+values (1, N'Hỏi quê quán');
+
+insert into BaiHoc(IDChuDe, TenBaiHoc)
+output inserted.ID
+values (1, N'Gặp người nước ngoài lần đầu');
+
+insert into BaiHoc(IDChuDe, TenBaiHoc)
+output inserted.ID
+values (2, N'Hỏi thăm sau khi chuyển nhà');
+
+insert into BaiHoc(IDChuDe, TenBaiHoc)
+output inserted.ID
+values (2, N'Hỏi thăm sau thời gian dài không gặp');
+
+insert into BaiHoc(IDChuDe, TenBaiHoc)
+output inserted.ID
+values (2, N'Sự thay đổi sau thời gian dài không gặp');
+
+insert into BaiHoc(IDChuDe, TenBaiHoc)
+output inserted.ID
+values (3, N'Báo tin tốt lành về kì thi');
+
+insert into BaiHoc(IDChuDe, TenBaiHoc)
+output inserted.ID
+values (3, N'Mong ước gặp một người');
+
+insert into BaiHoc(IDChuDe, TenBaiHoc)
+output inserted.ID
+values (3, N'Hòa hứng về một chiếc xe mới');
+
+insert into BaiHoc(IDChuDe, TenBaiHoc)
+output inserted.ID
+values (4, N'Buồn vì bài thi tiếng Anh không đạt');
+
+insert into BaiHoc(IDChuDe, TenBaiHoc)
+output inserted.ID
+values (4, N'Chia tay người yêu');
+
+insert into BaiHoc(IDChuDe, TenBaiHoc)
+output inserted.ID
+values (4, N'Bất tiên khi có nhà ở gần sân bay');
+
+insert into BaiHoc(IDChuDe, TenBaiHoc)
+output inserted.ID
+values (5, N'Động viên bạn cố gắng');
+
+insert into BaiHoc(IDChuDe, TenBaiHoc)
+output inserted.ID
+values (5, N'Chia sẻ khi bạn có tin buồn');
+
+insert into BaiHoc(IDChuDe, TenBaiHoc)
+output inserted.ID
+values (5, N'Động viên bạn cố gắng làm việc');
+go
+
+create table ChiTietBaiHoc
+(
+	ID int IDENTITY(1,1) PRIMARY KEY,
+	IDBaiHoc int FOREIGN KEY REFERENCES dbo.BaiHoc(ID),
+	NoiDung text,
+	LinkMp3 varchar(100)
+)
+go
+
+truncate table ChiTietBaiHoc;
+
+insert into ChiTietBaiHoc(IDBaiHoc, NoiDung, LinkMp3)
+output inserted.ID
+values (1, 'M: Ms. Potter, the package that you sent to the advertising agency in Tokyo was returnd today. It seems that you sent it to the wrong address. <br /> W: Actually, Ireceived an e-mail from the Tokyo office today informing me that they relocated their office yesterday. I wish they had told me earliedr. <br /> M: Well, that unfortunate. It seens unfair that you dad to pay for the postage. It must have been expensive to send such a large package. <br /> W: Yes, it was. I am going to request that the company in Tokyo pay me back', 'Link');
+go
+
+create table Hoc
+(
+	ID int IDENTITY(1,1) PRIMARY KEY,
+	IDThamGiaChuDe int FOREIGN KEY REFERENCES dbo.ThamGiaChuDe(ID),
+	IDBaiHoc int FOREIGN KEY REFERENCES dbo.BaiHoc(ID),
+	Diem int default 0
+)
+go
+
+truncate table Hoc
+
+insert into Hoc(IDThamGiaChuDe, IDBaiHoc)
+output inserted.ID
+values (1, 1);
+
+insert into Hoc(IDThamGiaChuDe, IDBaiHoc)
+output inserted.ID
+values (1, 2);
+go
+
+create table BaiKiemTra
+(
+	ID int IDENTITY(1, 1) PRIMARY KEY,
+	IDBaiHoc int FOREIGN KEY REFERENCES dbo.BaiHoc(ID),
+	NgayTao date default getdate()
+)
+go
+
+truncate table BaiKiemTra;
+
+insert into BaiKiemTra(IDBaiHoc)
+output inserted.ID
+values (1);
+
+insert into BaiKiemTra(IDBaiHoc)
+output inserted.ID
+values (2);
+
+insert into BaiKiemTra(IDBaiHoc)
+output inserted.ID
+values (3);
+
+insert into BaiKiemTra(IDBaiHoc)
+output inserted.ID
+values (4);
+
+insert into BaiKiemTra(IDBaiHoc)
+output inserted.ID
+values (5);
+go
+
+create table CauHoi
+(
+	ID int IDENTITY(1, 1) PRIMARY KEY,
+	IDBaiHoc int FOREIGN KEY REFERENCES dbo.BaiHoc(ID),
+	CauHoi varchar(200),
+	DapAnA varchar(200),
+	DapAnB varchar(200),
+	DapAnC varchar(200),
+	DapAnD varchar(200),
+	DapAnDung varchar(2),
+	GoiY ntext,
+)
+go
+
+insert into CauHoi(IDBaiHoc, CauHoi, DapAnA, DapAnB, DapAnC, DapAnD, DapAnDung, GoiY)
+output inserted.ID
+values (1, 'What are the speakers discussing?', 'A business trip', 'A budget proposal', 'An upcoming conference', 'A package delivery', 'D', N'Những người nói đang thảo luận về điều gì? <br /> A Chuyến đi công tac. <br /> B Bản đề xuất ngân sách. <br /> C Hội nghị sắp diễn ra. <br /> D Việc giao kiện hàng');
+go
+
+select *
+from CauHoi
+go
+
+select *
+from BaiKiemTra
+go
+
+select *
+from Hoc
+go
+
+select *
+from ChiTietBaiHoc
+go
+
+select *
+from BaiHoc
+go
+
 select *
 from ThamGiaChuDe
 go
@@ -197,6 +376,21 @@ go
 
 select *
 from NguoiDung;
+go
+
+drop table CauHoi
+go
+
+drop table BaiKiemTra
+go
+
+drop table Hoc
+go
+
+drop table ChiTietBaiHoc
+go
+
+drop table BaiHoc
 go
 
 drop table ThamGiaChuDe
