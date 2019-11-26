@@ -265,15 +265,26 @@ create table ChiTietBaiHoc
 	ID int IDENTITY(1,1) PRIMARY KEY,
 	IDBaiHoc int FOREIGN KEY REFERENCES dbo.BaiHoc(ID),
 	NoiDung text,
-	LinkMp3 varchar(100)
+	LinkMp3 varchar(100),
+	GhiChu varchar(100)
 )
 go
 
 truncate table ChiTietBaiHoc;
 
-insert into ChiTietBaiHoc(IDBaiHoc, NoiDung, LinkMp3)
+insert into ChiTietBaiHoc(IDBaiHoc, NoiDung, LinkMp3, GhiChu)
 output inserted.ID
-values (1, 'M: Ms. Potter, the package that you sent to the advertising agency in Tokyo was returnd today. It seems that you sent it to the wrong address. <br /> W: Actually, Ireceived an e-mail from the Tokyo office today informing me that they relocated their office yesterday. I wish they had told me earliedr. <br /> M: Well, that unfortunate. It seens unfair that you dad to pay for the postage. It must have been expensive to send such a large package. <br /> W: Yes, it was. I am going to request that the company in Tokyo pay me back', 'Link');
+values (1, 'M: Hello. Last Thursday, I arranged to have cable television installed at my house this Wednesday, Unfortunately, I will have to be out of town that day because of some urgent matters and would like to reschedule the appointment for Friday afternoon. <br /> W: Ok, that should not be a problem. However, I would like to warn you that there is a $5 rescheduling fee. Thats our companys police. Can I have your name, please? <br /> M: Oh, I see. My name is Charlie Kramer. I am living in Hainesville. Do you know when I will have to pay this fee? <br /> W: I will e-mail you soon about a user name and temporary password that you can use on our website. Please check the e-mail and pay all your bills through our website.', 'Link', 'Test4 32->34');
+go
+
+insert into ChiTietBaiHoc(IDBaiHoc, NoiDung, LinkMp3, GhiChu)
+output inserted.ID
+values (2, 'M: Hi, Tiffany. Do you know what happened to the company car? I tried to reserve it to day, but I was told it is being repaired. <br /> W: When Mark was driwing yesterday, he got a flat tire. I just headrd that the car should be out of the repair shop by this evening. I will let you know when they call me. <br /> M: Oh, thats good news. I was worried because I need it tomorrow morning to pick up an important client from the airport. <br /> W: Ah, is not that Mr.Lee from Beijing? Just in case, why do not you call a local car rental business and reserve a car for tomorrow? If the company car is fixed in time, you can cancel.', 'Link', 'Test4 35->37');
+go
+
+insert into ChiTietBaiHoc(IDBaiHoc, NoiDung, LinkMp3, GhiChu)
+output inserted.ID
+values (3, 'W: hello, this is Kelly in the accounting department. The ink cartridge in the printer on the fourth floor has run out. Do you think you could come to replace it to day? <br /> M: Sure. By the way, can I ask ou a favor? I need you to let me know what model the machine is so I can bring the correct one. Actually, I am not in the office right now, so I can not see what it is. <br /> W: Ok. But how can I find out that information? Do I have to open the printer cover or press some function buttons? <br /> M: No, you do not> Just ask Mr.Hills in your department. He should have a complete list of all the hardware on the fourth floor.', 'Link', 'Test4 38->40');
 go
 
 create table Hoc
@@ -330,7 +341,7 @@ go
 create table CauHoi
 (
 	ID int IDENTITY(1, 1) PRIMARY KEY,
-	IDBaiHoc int FOREIGN KEY REFERENCES dbo.BaiHoc(ID),
+	IDBaiKiemTra int FOREIGN KEY REFERENCES dbo.BaiKiemTra(ID),
 	CauHoi varchar(200),
 	DapAnA varchar(200),
 	DapAnB varchar(200),
@@ -341,9 +352,51 @@ create table CauHoi
 )
 go
 
-insert into CauHoi(IDBaiHoc, CauHoi, DapAnA, DapAnB, DapAnC, DapAnD, DapAnDung, GoiY)
+truncate table CauHoi;
+
+insert into CauHoi(IDBaiKiemTra, CauHoi, DapAnA, DapAnB, DapAnC, DapAnD, DapAnDung, GoiY)
 output inserted.ID
-values (1, 'What are the speakers discussing?', 'A business trip', 'A budget proposal', 'An upcoming conference', 'A package delivery', 'D', N'Những người nói đang thảo luận về điều gì? <br /> A Chuyến đi công tac. <br /> B Bản đề xuất ngân sách. <br /> C Hội nghị sắp diễn ra. <br /> D Việc giao kiện hàng');
+values (1, 'What did the man recently do?', 'Purchased a house.', 'Went on a business trip.', 'Signed up for a service.', 'Installed a television.', 'B', N'Người đàn ông vừa mới làm gì? <br /> A Mua nhà. <br /> B Đi công tác. <br /> C Đăng ký một dịch vụ. <br /> D Lắp đặt TV');
+go
+
+insert into CauHoi(IDBaiKiemTra, CauHoi, DapAnA, DapAnB, DapAnC, DapAnD, DapAnDung, GoiY)
+output inserted.ID
+values (1, 'Why must the man pay a fee?', 'He wants to change his schedule.', 'He returned an item late.', 'He lost his membership card.', 'He needs an additional service.', 'A', N'Tại sao người đàn ông phải trả phí? <br /> A Anh ấy muốn thay đổi lịch. <br /> B Anh ấy trả hàng trễ hạng. <br /> C Anh ấy bị mất thẻ thành viên. <br /> D Anh ấy cần thêm dịch vụ khác');
+go
+
+insert into CauHoi(IDBaiKiemTra, CauHoi, DapAnA, DapAnB, DapAnC, DapAnD, DapAnDung, GoiY)
+output inserted.ID
+values (1, 'What will the woman include in an e-mail?', 'A receipt.', 'Login information.', 'A membership contract.', 'Driving directions.', 'B', N'Người phụ nữ sẽ gửi kèm cái gì trong e-mail? <br /> A Biên lai. <br /> B Thông tin đăng nhập. <br /> C Hợp đồng đăng kí thành viên. <br /> D Hướng dẫn chỉ đường');
+go
+
+insert into CauHoi(IDBaiKiemTra, CauHoi, DapAnA, DapAnB, DapAnC, DapAnD, DapAnDung, GoiY)
+output inserted.ID
+values (2, 'What does the woman say caused the problem?', 'A repair cost has increased.', 'A reseervation has been canceled.', 'Aclient arrived too late.', 'A tire needed to be replaced.', 'D', N'Người phụ nữ nói điều gì gây ra sự cố? <br /> A Chi phí sửa chữa đã tăng lên. <br /> B Việc đặt chỗ đã bị hủy bỏ. <br /> C Khách hàng đến quá muộn. <br /> D Một lốp xe cần phải được thay mới');
+go
+
+insert into CauHoi(IDBaiKiemTra, CauHoi, DapAnA, DapAnB, DapAnC, DapAnD, DapAnDung, GoiY)
+output inserted.ID
+values (2, 'Why is the man concerned?', 'He lost an important receipt..', 'He needs a car to greet a chlient.', 'He has to reschedule a meeting.', 'He was unable to contact a client.', 'B', N'Tại sao người đàn ông lại lo lắng? <br /> A Anh ta đã làm mất một biên lai quan trọng. <br /> B Anh ta cần một chiếc xe hơi để đi đón khách hàng. <br /> C Anh ấy phải đặt lại một lịch họp. <br /> D Anh ta không thể liên lạc với khách hàng');
+go
+
+insert into CauHoi(IDBaiKiemTra, CauHoi, DapAnA, DapAnB, DapAnC, DapAnD, DapAnDung, GoiY)
+output inserted.ID
+values (2, 'What dose th woman suggest?', 'Prearing an alternative plan.', 'Ordering a replacement part.', 'Attending a conference.', 'Reserving a less expansive ticket.', 'A', N'Người phụ nữ khuyên điều gì? <br /> A Chuẩn bị một phương án dự phòng. <br /> B Đặt phụ tùng thay thế. <br /> C Tham dự một hội nghị. <br /> D Đặt một vé có giá thấp hơn');
+go
+
+insert into CauHoi(IDBaiKiemTra, CauHoi, DapAnA, DapAnB, DapAnC, DapAnD, DapAnDung, GoiY)
+output inserted.ID
+values (3, 'What problen is the woman reporting?', 'An accounting error has been made.', 'A printer is out of order.', 'Some office supplies have been used up.', 'A document has become lost.', 'C', N'Người phụ nữ báo cáo sự cố gì? <br /> A Sai sót trong công tác kế toán. <br /> B Một máy in bị hư. <br /> C Một vài dụng cụ văn phòng đã hết. <br /> D Một tài liệu đã bị mất');
+go
+
+insert into CauHoi(IDBaiKiemTra, CauHoi, DapAnA, DapAnB, DapAnC, DapAnD, DapAnDung, GoiY)
+output inserted.ID
+values (3, 'What dose the man ask the woman to do?', 'Check some product information.', 'Install new equipment.', 'Update customer information.', 'Stop by his office.', 'A', N'Người đàn ông yêu cầu người phụ nữ làm gì? <br /> A Kiểm tra thông tin sản phẩm. <br /> B Lắp đặt thiết bị mới. <br /> C Cập nhật thông tin khách hàng. <br /> D Ghé qua văn phòng anh ta');
+go
+
+insert into CauHoi(IDBaiKiemTra, CauHoi, DapAnA, DapAnB, DapAnC, DapAnD, DapAnDung, GoiY)
+output inserted.ID
+values (3, 'What is mentioned about Mr.Hills?', 'He is in charge of a new project.', 'He is in the same department as the woman.', 'He is in the same department as the woman.', 'He wrote a hardware list.', 'B', N'Ông Hills được nhắc đến về điều gì? <br /> A Anh ấy phụ trách một dự án mới. <br /> B Anh ấy ở cùng phòng ban với người phụ nữ. <br /> C Anh ta vừa đặt một đơn hàng. <br /> D Ông đã lập ra danh sách mua thiết bị');
 go
 
 select *
@@ -401,3 +454,10 @@ go
 
 drop table ChuDe;
 go
+
+select *
+from ChiTietbaihoc
+where (idbaihoc in (select Idbaihoc
+					from BaiHoc
+					where idchude = 1));
+
