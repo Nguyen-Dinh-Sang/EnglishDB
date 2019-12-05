@@ -18,6 +18,7 @@ create table NguoiDung
 go
 
 truncate table NguoiDung;
+go
 
 insert into NguoiDung(TenNguoiDung, TaiKhoan, MatKhau, SoDienThoai, Gmail, VaiTro)
 output inserted.ID
@@ -70,6 +71,7 @@ create table ChuDe
 go
 
 truncate table ChuDe;
+go
 
 insert into ChuDe(TenChuDe, ThongTin)
 output inserted.ID
@@ -155,12 +157,21 @@ go
 create table ThamGiaChuDe
 (
 	ID int IDENTITY(1,1) PRIMARY KEY,
-	IDNguoiDung int FOREIGN KEY REFERENCES dbo.NguoiDung(ID),
-	IDChuDe int FOREIGN KEY REFERENCES dbo.ChuDe(ID)
+	IDNguoiDung int,
+	IDChuDe int,
+	CONSTRAINT NguoiDung_ThamGiaChuDe
+	FOREIGN KEY (IDNguoiDung)
+	REFERENCES dbo.NguoiDung (ID) 
+	ON DELETE CASCADE,
+	CONSTRAINT ChuDe_ThamGiaChuDe
+	FOREIGN KEY (IDChuDe)
+	REFERENCES dbo.ChuDe (ID) 
+	ON DELETE CASCADE,
 )
 go
 
 truncate table ThamGiaChuDe;
+go
 
 insert into ThamGiaChuDe(IDNguoiDung, IDChuDe)
 output inserted.ID
@@ -190,14 +201,19 @@ go
 create table BaiHoc
 (
 	ID int IDENTITY(1,1) PRIMARY KEY,
-	IDChuDe int FOREIGN KEY REFERENCES dbo.ChuDe(ID),
+	IDChuDe int,
 	BaiSo int default 1,
 	TenBaiHoc nvarchar(100),
-	NgayTao date default getdate()
+	NgayTao date default getdate(),
+	CONSTRAINT ChuDe_BaiHoc
+	FOREIGN KEY (IDChuDe)
+	REFERENCES dbo.ChuDe (ID) 
+	ON DELETE CASCADE 
 )
 go
 
 truncate table BaiHoc;
+go
 
 insert into BaiHoc(IDChuDe, TenBaiHoc)
 output inserted.ID
@@ -263,14 +279,19 @@ go
 create table ChiTietBaiHoc
 (
 	ID int IDENTITY(1,1) PRIMARY KEY,
-	IDBaiHoc int FOREIGN KEY REFERENCES dbo.BaiHoc(ID),
+	IDBaiHoc int,
 	NoiDung text,
 	LinkMp3 varchar(100),
-	GhiChu varchar(100)
+	GhiChu varchar(100),
+	CONSTRAINT BaiHoc_ChiTietBaiHoc
+	FOREIGN KEY (IDBaiHoc)
+	REFERENCES dbo.BaiHoc (ID) 
+	ON DELETE CASCADE 
 )
 go
 
 truncate table ChiTietBaiHoc;
+go
 
 insert into ChiTietBaiHoc(IDBaiHoc, NoiDung, LinkMp3, GhiChu)
 output inserted.ID
@@ -290,13 +311,21 @@ go
 create table Hoc
 (
 	ID int IDENTITY(1,1) PRIMARY KEY,
-	IDThamGiaChuDe int FOREIGN KEY REFERENCES dbo.ThamGiaChuDe(ID),
-	IDBaiHoc int FOREIGN KEY REFERENCES dbo.BaiHoc(ID),
-	Diem int default 0
+	IDThamGiaChuDe int,
+	IDBaiHoc int,
+	Diem int default 0,
+	CONSTRAINT ThamGiaChuDe_Hoc
+	FOREIGN KEY (IDThamGiaChuDe)
+	REFERENCES dbo.ThamGiaChuDe (ID),
+	CONSTRAINT BaiHoc_Hoc
+	FOREIGN KEY (IDBaiHoc)
+	REFERENCES dbo.BaiHoc (ID) 
+	ON DELETE CASCADE
 )
 go
 
-truncate table Hoc
+truncate table Hoc;
+go
 
 insert into Hoc(IDThamGiaChuDe, IDBaiHoc)
 output inserted.ID
@@ -310,12 +339,17 @@ go
 create table BaiKiemTra
 (
 	ID int IDENTITY(1, 1) PRIMARY KEY,
-	IDBaiHoc int FOREIGN KEY REFERENCES dbo.BaiHoc(ID),
-	NgayTao date default getdate()
+	IDBaiHoc int,
+	NgayTao date default getdate(),
+	CONSTRAINT BaiHoc_BaiKiemTra
+	FOREIGN KEY (IDBaiHoc)
+	REFERENCES dbo.BaiHoc (ID) 
+	ON DELETE CASCADE
 )
 go
 
 truncate table BaiKiemTra;
+go
 
 insert into BaiKiemTra(IDBaiHoc)
 output inserted.ID
@@ -341,7 +375,7 @@ go
 create table CauHoi
 (
 	ID int IDENTITY(1, 1) PRIMARY KEY,
-	IDBaiKiemTra int FOREIGN KEY REFERENCES dbo.BaiKiemTra(ID),
+	IDBaiKiemTra int,
 	CauHoi varchar(200),
 	DapAnA varchar(200),
 	DapAnB varchar(200),
@@ -349,10 +383,15 @@ create table CauHoi
 	DapAnD varchar(200),
 	DapAnDung varchar(2),
 	GoiY ntext,
+	CONSTRAINT BaiKiemTra_CauHoi
+	FOREIGN KEY (IDBaiKiemTra)
+	REFERENCES dbo.BaiHoc (ID) 
+	ON DELETE CASCADE
 )
 go
 
 truncate table CauHoi;
+go
 
 insert into CauHoi(IDBaiKiemTra, CauHoi, DapAnA, DapAnB, DapAnC, DapAnD, DapAnDung, GoiY)
 output inserted.ID
