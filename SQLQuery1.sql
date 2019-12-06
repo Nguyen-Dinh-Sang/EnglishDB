@@ -385,7 +385,7 @@ create table CauHoi
 	GoiY ntext,
 	CONSTRAINT BaiKiemTra_CauHoi
 	FOREIGN KEY (IDBaiKiemTra)
-	REFERENCES dbo.BaiHoc (ID) 
+	REFERENCES dbo.BaiKiemTra (ID) 
 	ON DELETE CASCADE
 )
 go
